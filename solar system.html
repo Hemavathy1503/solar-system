@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar System Display</title>
+    <style>
+        /* General Styles */
+        body {
+            background: black;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            overflow: hidden; 
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+            z-index: 100; 
+        }
+
+        /* Input field for planet name */
+        #planet-input {
+            margin: 20px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #fff; /* Made border thicker for visibility */
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2); /* Slightly more opaque */
+            color: white;
+            width: 200px;
+            text-align: center;
+            position: relative;
+            z-index: 50; /* Ensure it's above other elements */
+        }
+
+        #planet-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Info display box */
+        #planet-info {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+            min-height: 100px;
+            display: none; /* Hidden by default */
+            position: relative;
+            z-index: 50; /* Ensure it's above other elements */
+        }
+
+        /* Solar System Container */
+        .solar-system {
+            position: relative;
+            width: 1000px; 
+            height: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: -100px 0; 
+            z-index: 1; /* Lower z-index so input/info is above */
+        }
+
+        /* Sun and Planet Base Styles */
+        .sun {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffe066, #ff8c00);
+            box-shadow: 0 0 30px #ff8c00, 0 0 60px #ffa500;
+            z-index: 10;
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Animation for the orbit */
+            animation: orbit-rotation linear infinite;
+        }
+
+        /* Define orbit sizes (diameter) and speed */
+        .mercury-orbit { width: 150px; height: 150px; animation-duration: 4s; }
+        .venus-orbit { width: 250px; height: 250px; animation-duration: 7s; }
+        .earth-orbit { width: 350px; height: 350px; animation-duration: 10s; }
+        .mars-orbit { width: 450px; height: 450px; animation-duration: 15s; }
+        .jupiter-orbit { width: 600px; height: 600px; animation-duration: 25s; }
+        .saturn-orbit { width: 750px; height: 750px; animation-duration: 35s; }
+        .uranus-orbit { width: 900px; height: 900px; animation-duration: 50s; }
+        .neptune-orbit { width: 1050px; height: 1050px; animation-duration: 70s; }
+        
+        /* Keyframe for orbit rotation */
+        @keyframes orbit-rotation {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .planet {
+            position: absolute;
+            border-radius: 50%;
+            transition: 0.2s;
+            top: 0; 
+            left: 50%; 
+            transform: translateX(-50%); 
+        }
+        
+        /* Removed hover effects since they are not clickable */
+
+        /* Planet specific sizes and colors */
+        .mercury { background: #8a8a8a; width: 10px; height: 10px; }
+        .venus { background: #d2a44d; width: 16px; height: 16px; }
+        .earth { background: #4a90e2; width: 18px; height: 18px; }
+        .mars { background: #c25e4c; width: 13px; height: 13px; }
+        .jupiter { background: #cc9966; width: 35px; height: 35px; }
+        .saturn { 
+            background: #e6c697; width: 30px; height: 30px; 
+            box-shadow: 0 0 0 5px rgba(220, 220, 220, 0.3);
+        }
+        .uranus { background: #a8dadc; width: 22px; height: 22px; }
+        .neptune { background: #3b5998; width: 21px; height: 21px; }
+
+    </style>
+</head>
+<body>
+
+    <h1>✨ Solar System ✨</h1>
+
+    <input type="text" id="planet-input" placeholder="Type a planet or sun name...">
+
+    <div id="planet-info"></div>
+
+    <div class="solar-system">
+        <div class="sun"></div>
+
+        <div class="orbit mercury-orbit">
+            <div class="planet mercury"></div>
+        </div>
+        <div class="orbit venus-orbit">
+            <div class="planet venus"></div>
+        </div>
+        <div class="orbit earth-orbit">
+            <div class="planet earth"></div>
+        </div>
+        <div class="orbit mars-orbit">
+            <div class="planet mars"></div>
+        </div>
+        <div class="orbit jupiter-orbit">
+            <div class="planet jupiter"></div>
+        </div>
+        <div class="orbit saturn-orbit">
+            <div class="planet saturn"></div>
+        </div>
+        <div class="orbit uranus-orbit">
+            <div class="planet uranus"></div>
+        </div>
+        <div class="orbit neptune-orbit">
+            <div class="planet neptune"></div>
+        </div>
+        
+    </div>
+
+    <script>
+        const planetData = {
+            sun: {
+                name: "Sun",
+                info: "The Sun is the star at the center of our solar system. It is a nearly perfect sphere of hot plasma, heated to incandescence by nuclear fusion reactions in its core. The Sun's mass is about 99.86% of the total mass of the solar system. It has a diameter of about 1.39 million kilometers and a surface temperature of around 5,778 K."
+            },
+            mercury: {
+                name: "Mercury",
+                info: "Mercury is the smallest planet in our solar system and the closest to the Sun. It has a thin atmosphere and extreme temperature variations. A day on Mercury lasts 59 Earth days, while a year lasts 88 Earth days. It has no moons and is known for its cratered surface."
+            },
+            venus: {
+                name: "Venus",
+                info: "Venus is the second planet from the Sun and is often called Earth's 'sister planet' due to its similar size. It has a thick, toxic atmosphere that traps heat, making it the hottest planet with surface temperatures up to 462°C. It rotates backwards compared to most planets and has no moons."
+            },
+            earth: {
+                name: "Earth",
+                info: "Earth is the third planet from the Sun and the only known planet to harbor life. It has a diverse climate, abundant water, and a protective atmosphere. Earth has one moon and orbits the Sun once every 365.25 days. About 71% of its surface is covered by water."
+            },
+            mars: {
+                name: "Mars",
+                info: "Mars is the fourth planet from the Sun, known as the Red Planet due to its iron oxide-rich soil. It has the largest volcano in the solar system (Olympus Mons) and polar ice caps. Mars has two small moons, Phobos and Deimos, and a thin atmosphere."
+            },
+            jupiter: {
+                name: "Jupiter",
+                info: "Jupiter is the largest planet in our solar system, a gas giant with a Great Red Spot storm. It has at least 79 moons, including the four largest: Io, Europa, Ganymede, and Callisto. Jupiter's mass is more than twice that of all other planets combined."
+            },
+            saturn: {
+                name: "Saturn",
+                info: "Saturn is the sixth planet from the Sun and is famous for its prominent ring system made of ice and rock particles. It is a gas giant with at least 82 known moons, including Titan, which has a thick atmosphere. Saturn's density is so low it would float in water."
+            },
+            uranus: {
+                name: "Uranus",
+                info: "Uranus is the seventh planet from the Sun and is an ice giant with a unique sideways tilt, causing extreme seasonal changes. It has faint rings and at least 27 moons. Uranus is composed mainly of water, methane, and ammonia ices, and has a pale cyan color due to methane in its atmosphere."
+            },
+            neptune: {
+                name: "Neptune",
+                info: "Neptune is the eighth and farthest planet from the Sun, an ice giant with strong winds and a Great Dark Spot storm. It has 14 known moons, including Triton, which orbits backwards. Neptune's deep blue color comes from methane in its atmosphere, and it takes about 165 Earth years to orbit the Sun."
+            }
+        };
+
+        const input = document.getElementById('planet-input');
+        const infoDiv = document.getElementById('planet-info');
+
+        // Function to speak the text
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                window.speechSynthesis.speak(utterance);
+            } else {
+                console.log('Speech synthesis not supported');
+            }
+        }
+
+        input.addEventListener('input', function() {
+            const query = input.value.toLowerCase().trim();
+            if (planetData[query]) {
+                infoDiv.innerHTML = `<h2>${planetData[query].name}</h2><p>${planetData[query].info}</p>`;
+                infoDiv.style.display = 'block';
+                // Speak the info
+                speakText(planetData[query].info);
+            } else if (query === '') {
+                infoDiv.style.display = 'none';
+                // Stop any ongoing speech
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                }
+            } else {
+                infoDiv.innerHTML = '<p>No information found for that name. Try typing "Sun", "Mercury", "Venus", etc.</p>';
+                infoDiv.style.display = 'block';
+                // Speak the error message
+                speakText('No information found for that name. Try typing Sun, Mercury, Venus, etc.');
+            }
+        });
+    </script>
+
+</body>
+</html>
