@@ -44,10 +44,7 @@ Uses the browser’s native **SpeechSynthesis API** to read descriptions aloud.
 ```
 /
 ├── index.html   # Main UI + Solar system markup
-├── style.css    # Embedded inside <style>
-└── script.js    # Embedded inside <script>
 ```
-
 ---
 
 # 🧠 How the Code Works
