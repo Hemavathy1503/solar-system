@@ -39,16 +39,6 @@ Uses the browser’s native **SpeechSynthesis API** to read descriptions aloud.
 
 ---
 
-## 📷 Preview (Suggestion)
-
-> *(You can add a GIF or screenshot here)*
-
-```
-/preview/solar-system.gif
-```
-
----
-
 ## 📁 File Structure
 
 ```
